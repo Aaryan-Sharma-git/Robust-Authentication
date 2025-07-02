@@ -6,15 +6,21 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "tsc --watch"
-  }
-,
+    "dev": "tsc --watch & nodemon dist/app.js",
+    "format": "prettier --write ."
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
     "@types/node": "^24.0.7",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.0.1"
   }
 }
