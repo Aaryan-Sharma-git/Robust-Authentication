@@ -1,12 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true
+    "target": "ES2020", // Modern JS output
+    "module": "NodeNext", // Use ES Modules
+    "moduleResolution": "NodeNext", // Crucial for ESM support
+    "outDir": "dist", // Where compiled .js files go
+    "rootDir": "src", // Your source folder
+    "esModuleInterop": true, // Allow CommonJS imports
+    "forceConsistentCasingInFileNames": true, // Catch casing issues
+    "strict": true, // Enable all strict checks
+    "skipLibCheck": true, // Skip type checks for node_modules
+    "resolveJsonModule": true, // Allow importing .json files
+    "isolatedModules": true, // Required by some bundlers like Vite
+    "noImplicitAny": true, //part of strict check
+    "strictNullChecks": true //pat of strict check
+    // "types": ["node", "express"]
   },
-  "include": ["src"]
+  "include": ["src", "types"], // Include only src files
+  "exclude": ["node_modules", "dist"] // Exclude unnecessary folders
 }
