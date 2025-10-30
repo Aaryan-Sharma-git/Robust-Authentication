@@ -1,0 +1,63 @@
+services:
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 127.0.0.1:27018:27017
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./backend/.env
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+# That’s a problem because:
+  # You don’t have node_modules on your host (they’re installed inside the container).
+  # Overwriting /app removes the container’s installed dependencies.
+# So the second line (/app/node_modules) creates a separate volume for node_modules that:
+  # Keeps dependencies safe inside Docker.
+  # Prevents your local ./backend bind mount from overwriting them.
+    ports:
+      - 127.0.0.1:4000:4000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    networks:
+      - app-network
+    depends_on:
+      - mongo
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: ./frontend/.env
+    command: npm run dev -- --host
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - 127.0.0.1:5173:5173
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    networks:
+      - app-network
+    depends_on:
+      - backend
+    
+
+volumes:
+  mongo-data:
+  frontend_node_modules:
+  backend_node_modules:
+
+networks:
+  app-network:
+
