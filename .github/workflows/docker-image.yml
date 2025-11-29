@@ -1,0 +1,34 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build-and-push:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+    - name: build backend image
+      run: docker build -t backend-img-ci ./backend
+    
+    - name: build frontend image
+      run: docker build -t frontend-img-ci ./frontend
+
+    - name: push backend to dockerhub
+      run: docker push backend-img-ci
+
+    - name: push frontend to dockerhub
+      run: docker push frontend-img-ci
