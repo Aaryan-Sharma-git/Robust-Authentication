@@ -22,13 +22,13 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     
     - name: build backend image
-      run: docker build -t backend-img-ci ./backend
+      run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/backend-img-ci:latest ./backend
     
     - name: build frontend image
-      run: docker build -t frontend-img-ci ./frontend
+      run: docker build -t ${{ vars.DOCKERHUB_USERNAME }}/frontend-img-ci:latest ./frontend
 
     - name: push backend to dockerhub
-      run: docker push backend-img-ci
+      run: docker push ${{ vars.DOCKERHUB_USERNAME }}/backend-img-ci:latest
 
     - name: push frontend to dockerhub
-      run: docker push frontend-img-ci
+      run: docker push ${{ vars.DOCKERHUB_USERNAME }}/frontend-img-ci:latest
